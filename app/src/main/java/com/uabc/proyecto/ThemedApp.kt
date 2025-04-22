@@ -1,34 +1,42 @@
 package com.uabc.proyecto
 
-import androidx.compose.material3.*
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.uabc.proyecto.themeswitcher.*
 import com.uabc.proyecto.navigation.AppNavigation
-
+import com.uabc.proyecto.themeswitcher.*
 
 @Composable
 fun ThemedApp() {
-    var currentTheme by remember { mutableStateOf<AppTheme>(AppTheme.Independencia) }
-
     val isDark = isSystemInDarkTheme()
+    val viewModel: ThemeViewModel = viewModel()
+    val currentTheme = viewModel.currentTheme.collectAsState().value
 
-    val colors: ColorScheme = when (currentTheme) {
-        is AppTheme.Independencia -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme
-        is AppTheme.SanValentin -> if (isDark) darkSanValentinScheme else lightSanValentinScheme
-        is AppTheme.Halloween -> if (isDark) darkHalloweenScheme else lightHalloweenScheme
+    if (currentTheme == null) {
+        Box(modifier = Modifier.fillMaxSize())
+        return
     }
 
+    val colorScheme = when (currentTheme) {
+        is AppTheme.SanValentin -> if (isDark) darkSanValentinScheme else lightSanValentinScheme
+        is AppTheme.Independencia -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme
+        is AppTheme.Halloween -> if (isDark) darkHalloweenScheme else lightHalloweenScheme
+        else -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme // fallback
+    }
 
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = colorScheme,
         typography = Typography()
     ) {
         AppNavigation(
             navController = rememberNavController(),
             currentTheme = currentTheme,
-            onThemeSelected = { currentTheme = it }
+            onThemeSelected = { viewModel.updateTheme(it) }
         )
     }
 }

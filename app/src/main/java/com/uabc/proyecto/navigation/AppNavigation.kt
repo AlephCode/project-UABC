@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.uabc.proyecto.themeswitcher.AppTheme
 import com.uabc.proyecto.screens.ProfileScreen
-import com.uabc.proyecto.ui.SettingsScreen
+import com.uabc.proyecto.screens.SettingsScreen
 
 @Composable
 fun AppNavigation(
