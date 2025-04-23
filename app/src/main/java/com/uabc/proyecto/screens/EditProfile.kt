@@ -7,7 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,8 +17,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.uabc.proyecto.themeswitcher.AppTheme
 import java.time.Instant
 import java.time.ZoneId
@@ -53,6 +58,12 @@ fun EditProfile(
 
     // Formato para mostrar la fecha
     val dateFormatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy")
+
+    // Obtener configuración de pantalla para adaptación
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+    val isLandscape = screenWidth > screenHeight
 
     Scaffold(
         topBar = {
@@ -263,150 +274,311 @@ fun EditProfile(
             }
         }
 
-        // DatePicker para la selección de fecha de nacimiento
+// DatePicker para la selección de fecha de nacimiento - Adaptable a la orientación
         if (showDatePicker) {
-            DatePickerDialog(
+            Dialog(
                 onDismissRequest = { showDatePicker = false },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            // Obtener la fecha seleccionada y formatearla
-                            datePickerState.selectedDateMillis?.let { milliseconds ->
-                                val date = Instant.ofEpochMilli(milliseconds)
-                                    .atZone(ZoneId.systemDefault())
-                                    .toLocalDate()
-                                editableBirthDate = date.format(dateFormatter)
-                            }
-                            showDatePicker = false
-                        }
-                    ) {
-                        Text("Aceptar")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showDatePicker = false }) {
-                        Text("Cancelar")
-                    }
-                },
-                colors = DatePickerDefaults.colors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                    headlineContentColor = MaterialTheme.colorScheme.onSurface,
-                    weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    yearContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    currentYearContentColor = MaterialTheme.colorScheme.primary,
-                    selectedYearContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    selectedYearContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    dayContentColor = MaterialTheme.colorScheme.onSurface,
-                    selectedDayContainerColor = MaterialTheme.colorScheme.primary,
-                    selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
-                    todayContentColor = MaterialTheme.colorScheme.primary,
-                    todayDateBorderColor = MaterialTheme.colorScheme.primary
+                properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                    usePlatformDefaultWidth = false // Permite que el diálogo se ajuste al contenido
                 )
             ) {
-                DatePicker(
-                    state = datePickerState,
-                    showModeToggle = true,
-                    colors = DatePickerDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
-                        headlineContentColor = MaterialTheme.colorScheme.onSurface,
-                        weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        yearContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        currentYearContentColor = MaterialTheme.colorScheme.primary,
-                        selectedYearContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedYearContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        dayContentColor = MaterialTheme.colorScheme.onSurface,
-                        selectedDayContainerColor = MaterialTheme.colorScheme.primary,
-                        selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
-                        todayContentColor = MaterialTheme.colorScheme.primary,
-                        todayDateBorderColor = MaterialTheme.colorScheme.primary
-                    )
-                )
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth(if (isLandscape) 0.85f else 0.95f)
+                        // Reducir la altura máxima en modo horizontal para ver todos los días
+                        .fillMaxHeight(if (isLandscape) 0.80f else 0.7f),
+                    shape = MaterialTheme.shapes.extraLarge,
+                    tonalElevation = 6.dp
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        // Título y botones - hacer más compacto
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = 24.dp,
+                                    end = 24.dp,
+                                    top = if (isLandscape) 12.dp else 20.dp,
+                                    bottom = if (isLandscape) 8.dp else 12.dp
+                                ),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Seleccionar fecha",
+                                style = if (isLandscape)
+                                    MaterialTheme.typography.titleMedium
+                                else
+                                    MaterialTheme.typography.titleLarge
+                            )
+
+                            Row {
+                                TextButton(onClick = { showDatePicker = false }) {
+                                    Text("Cancelar")
+                                }
+                                TextButton(
+                                    onClick = {
+                                        datePickerState.selectedDateMillis?.let { milliseconds ->
+                                            val date = Instant.ofEpochMilli(milliseconds)
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate()
+                                            editableBirthDate = date.format(dateFormatter)
+                                        }
+                                        showDatePicker = false
+                                    }
+                                ) {
+                                    Text("Aceptar")
+                                }
+                            }
+                        }
+
+                        // Contenido del DatePicker adaptado a la orientación - más compacto en horizontal
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    horizontal = 12.dp,
+                                    vertical = if (isLandscape) 4.dp else 8.dp
+                                )
+                        ) {
+                            DatePicker(
+                                state = datePickerState,
+                                modifier = Modifier.fillMaxSize(),
+                                // Solo mostrar el modo compacto en horizontal para ahorrar espacio
+                                showModeToggle = !isLandscape,
+                                title = null, // Ya tenemos un título personalizado arriba
+                                headline = null, // Para ahorrar espacio
+                                colors = DatePickerDefaults.colors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    titleContentColor = MaterialTheme.colorScheme.primary,
+                                    headlineContentColor = MaterialTheme.colorScheme.onSurface,
+                                    weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    yearContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    currentYearContentColor = MaterialTheme.colorScheme.primary,
+                                    selectedYearContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedYearContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    dayContentColor = MaterialTheme.colorScheme.onSurface,
+                                    selectedDayContainerColor = MaterialTheme.colorScheme.primary,
+                                    selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
+                                    todayContentColor = MaterialTheme.colorScheme.primary,
+                                    todayDateBorderColor = MaterialTheme.colorScheme.primary
+                                )
+                            )
+                        }
+                    }
+                }
             }
         }
 
-        // Diálogo de selección de ubicación
+        // Diálogo de selección de ubicación - Adaptable a la orientación
         if (showLocationPicker) {
-            AlertDialog(
+            Dialog(
                 onDismissRequest = { showLocationPicker = false },
-                title = { Text("Seleccionar ubicación") },
-                text = {
-                    Column {
-                        Text("Selecciona una ubicación predefinida o introduce una dirección manualmente")
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Lista de ubicaciones predefinidas
-                        val predefinedLocations = listOf(
-                            "Tijuana, Baja California, México",
-                            "Mexicali, Baja California, México",
-                            "Ensenada, Baja California, México",
-                            "Tecate, Baja California, México",
-                            "Rosarito, Baja California, México"
+                properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                    usePlatformDefaultWidth = false
+                )
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth(if (isLandscape) 0.85f else 0.95f)
+                        .fillMaxHeight(if (isLandscape) 0.95f else 0.75f),
+                    shape = MaterialTheme.shapes.extraLarge,
+                    tonalElevation = 6.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 16.dp, horizontal = 24.dp)
+                    ) {
+                        // Título
+                        Text(
+                            "Seleccionar ubicación",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(bottom = 16.dp)
                         )
 
-                        Column {
-                            predefinedLocations.forEach { locationOption ->
-                                Surface(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            editableLocation = locationOption
-                                            showLocationPicker = false
-                                        },
-                                    color = MaterialTheme.colorScheme.surfaceVariant
+                        // Contenido con scroll adaptable
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            Text("Selecciona una ubicación predefinida o introduce una dirección manualmente")
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Lista de ubicaciones predefinidas
+                            val predefinedLocations = listOf(
+                                "Tijuana, Baja California, México",
+                                "Mexicali, Baja California, México",
+                                "Ensenada, Baja California, México",
+                                "Tecate, Baja California, México",
+                                "Rosarito, Baja California, México"
+                            )
+
+                            // Layout adaptable según orientación
+                            if (isLandscape && screenWidth >= 600.dp) {
+                                // Diseño para pantallas grandes en horizontal
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
-                                    Row(
-                                        modifier = Modifier
-                                            .padding(vertical = 12.dp, horizontal = 16.dp)
-                                            .fillMaxWidth(),
-                                        verticalAlignment = Alignment.CenterVertically
+                                    // Columna de ubicaciones predefinidas
+                                    Column(
+                                        modifier = Modifier.weight(1f)
                                     ) {
-                                        Icon(
-                                            Icons.Default.LocationOn,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary
+                                        Text(
+                                            "Ubicaciones predefinidas",
+                                            style = MaterialTheme.typography.titleSmall,
+                                            modifier = Modifier.padding(bottom = 8.dp)
                                         )
-                                        Spacer(modifier = Modifier.width(16.dp))
-                                        Text(locationOption)
+
+                                        predefinedLocations.forEach { locationOption ->
+                                            Surface(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .clickable {
+                                                        editableLocation = locationOption
+                                                        showLocationPicker = false
+                                                    },
+                                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                                shape = MaterialTheme.shapes.small
+                                            ) {
+                                                Row(
+                                                    modifier = Modifier
+                                                        .padding(vertical = 10.dp, horizontal = 12.dp)
+                                                        .fillMaxWidth(),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Icon(
+                                                        Icons.Default.LocationOn,
+                                                        contentDescription = null,
+                                                        tint = MaterialTheme.colorScheme.primary,
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                    Text(locationOption)
+                                                }
+                                            }
+                                            Spacer(modifier = Modifier.height(6.dp))
+                                        }
+                                    }
+
+                                    // Columna para ubicación personalizada
+                                    Column(
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text(
+                                            "Ubicación personalizada",
+                                            style = MaterialTheme.typography.titleSmall,
+                                            modifier = Modifier.padding(bottom = 8.dp)
+                                        )
+
+                                        OutlinedTextField(
+                                            value = editableLocation,
+                                            onValueChange = { editableLocation = it },
+                                            label = { Text("Ingresa tu ubicación") },
+                                            leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+
+                                        Text(
+                                            "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.padding(top = 8.dp)
+                                        )
                                     }
                                 }
-                                Spacer(modifier = Modifier.height(8.dp))
+                            } else {
+                                // Diseño para pantallas más pequeñas o en vertical
+                                Column {
+                                    Text(
+                                        "Ubicaciones predefinidas",
+                                        style = MaterialTheme.typography.titleSmall,
+                                        modifier = Modifier.padding(bottom = 8.dp)
+                                    )
+
+                                    predefinedLocations.forEach { locationOption ->
+                                        Surface(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable {
+                                                    editableLocation = locationOption
+                                                    showLocationPicker = false
+                                                },
+                                            color = MaterialTheme.colorScheme.surfaceVariant,
+                                            shape = MaterialTheme.shapes.small
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .padding(vertical = 12.dp, horizontal = 16.dp)
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Icon(
+                                                    Icons.Default.LocationOn,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.primary
+                                                )
+                                                Spacer(modifier = Modifier.width(16.dp))
+                                                Text(locationOption)
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                    }
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    Text(
+                                        "Ubicación personalizada",
+                                        style = MaterialTheme.typography.titleSmall,
+                                        modifier = Modifier.padding(bottom = 8.dp)
+                                    )
+
+                                    OutlinedTextField(
+                                        value = editableLocation,
+                                        onValueChange = { editableLocation = it },
+                                        label = { Text("Ingresa tu ubicación") },
+                                        leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+
+                                    Text(
+                                        "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(top = 8.dp)
+                                    )
+                                }
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        // Botones de acción
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
+                        ) {
+                            TextButton(onClick = { showLocationPicker = false }) {
+                                Text("Cancelar")
+                            }
 
-                        // Campo para ingresar manualmente
-                        OutlinedTextField(
-                            value = editableLocation,
-                            onValueChange = { editableLocation = it },
-                            label = { Text("Ubicación personalizada") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Text(
-                            "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-                },
-                confirmButton = {
-                    TextButton(onClick = { showLocationPicker = false }) {
-                        Text("Aceptar")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showLocationPicker = false }) {
-                        Text("Cancelar")
+                            Button(onClick = { showLocationPicker = false }) {
+                                Text("Aceptar")
+                            }
+                        }
                     }
                 }
-            )
+            }
         }
 
         // Diálogo para cambiar la foto de perfil
