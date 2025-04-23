@@ -27,6 +27,8 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+import com.uabc.proyecto.ScaledText
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +70,7 @@ fun EditProfile(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Perfil") },
+                title = { ScaledText("Editar Perfil") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.Close, contentDescription = "Cerrar")
@@ -122,7 +124,7 @@ fun EditProfile(
                     TextButton(
                         onClick = { showProfilePictureOptions = true }
                     ) {
-                        Text("Cambiar foto")
+                        ScaledText("Cambiar foto")
                     }
                 }
             }
@@ -131,7 +133,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableName,
                     onValueChange = { editableName = it },
-                    label = { Text("Nombre") },
+                    label = { ScaledText("Nombre") },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -140,7 +142,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableEmail,
                     onValueChange = { editableEmail = it },
-                    label = { Text("Correo Electrónico") },
+                    label = { ScaledText("Correo Electrónico") },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -149,7 +151,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableLocation,
                     onValueChange = { editableLocation = it },
-                    label = { Text("Ubicación") },
+                    label = { ScaledText("Ubicación") },
                     leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = "Ubicación") },
                     trailingIcon = {
                         IconButton(onClick = { showLocationPicker = true }) {
@@ -168,7 +170,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableBirthDate,
                     onValueChange = { },
-                    label = { Text("Fecha de nacimiento") },
+                    label = { ScaledText("Fecha de nacimiento") },
                     leadingIcon = { Icon(Icons.Default.DateRange, contentDescription = "Fecha") },
                     trailingIcon = {
                         IconButton(onClick = { showDatePicker = true }) {
@@ -187,7 +189,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableAboutMe,
                     onValueChange = { editableAboutMe = it },
-                    label = { Text("Acerca de mí") },
+                    label = { ScaledText("Acerca de mí") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp)
@@ -195,7 +197,7 @@ fun EditProfile(
             }
 
             item {
-                Text(
+                ScaledText(
                     "Intereses",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxWidth()
@@ -215,7 +217,7 @@ fun EditProfile(
                                 set(index, updatedInterest)
                             }
                         },
-                        label = { Text("Interés ${index + 1}") },
+                        label = { ScaledText("Interés ${index + 1}") },
                         modifier = Modifier.weight(1f)
                     )
 
@@ -247,10 +249,10 @@ fun EditProfile(
                     ) {
                         Icon(Icons.Default.Add, contentDescription = "Agregar")
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Agregar interés")
+                        ScaledText("Agregar interés")
                     }
                 } else {
-                    Text(
+                    ScaledText(
                         "Has alcanzado el máximo de intereses (6).",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error,
@@ -263,7 +265,7 @@ fun EditProfile(
             // Mensaje informativo sobre eliminar intereses
             item {
                 if (editableInterests.size <= 3) {
-                    Text(
+                    ScaledText(
                         "Debes mantener al menos 3 intereses.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -308,7 +310,7 @@ fun EditProfile(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
+                            ScaledText(
                                 "Seleccionar fecha",
                                 style = if (isLandscape)
                                     MaterialTheme.typography.titleMedium
@@ -318,7 +320,7 @@ fun EditProfile(
 
                             Row {
                                 TextButton(onClick = { showDatePicker = false }) {
-                                    Text("Cancelar")
+                                    ScaledText("Cancelar")
                                 }
                                 TextButton(
                                     onClick = {
@@ -331,7 +333,7 @@ fun EditProfile(
                                         showDatePicker = false
                                     }
                                 ) {
-                                    Text("Aceptar")
+                                    ScaledText("Aceptar")
                                 }
                             }
                         }
@@ -398,7 +400,7 @@ fun EditProfile(
                             .padding(vertical = 16.dp, horizontal = 24.dp)
                     ) {
                         // Título
-                        Text(
+                        ScaledText(
                             "Seleccionar ubicación",
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(bottom = 16.dp)
@@ -410,7 +412,7 @@ fun EditProfile(
                                 .weight(1f)
                                 .verticalScroll(rememberScrollState())
                         ) {
-                            Text("Selecciona una ubicación predefinida o introduce una dirección manualmente")
+                            ScaledText("Selecciona una ubicación predefinida o introduce una dirección manualmente")
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -434,7 +436,7 @@ fun EditProfile(
                                     Column(
                                         modifier = Modifier.weight(1f)
                                     ) {
-                                        Text(
+                                        ScaledText(
                                             "Ubicaciones predefinidas",
                                             style = MaterialTheme.typography.titleSmall,
                                             modifier = Modifier.padding(bottom = 8.dp)
@@ -464,7 +466,7 @@ fun EditProfile(
                                                         modifier = Modifier.size(18.dp)
                                                     )
                                                     Spacer(modifier = Modifier.width(8.dp))
-                                                    Text(locationOption)
+                                                    ScaledText(locationOption)
                                                 }
                                             }
                                             Spacer(modifier = Modifier.height(6.dp))
@@ -475,7 +477,7 @@ fun EditProfile(
                                     Column(
                                         modifier = Modifier.weight(1f)
                                     ) {
-                                        Text(
+                                        ScaledText(
                                             "Ubicación personalizada",
                                             style = MaterialTheme.typography.titleSmall,
                                             modifier = Modifier.padding(bottom = 8.dp)
@@ -484,12 +486,12 @@ fun EditProfile(
                                         OutlinedTextField(
                                             value = editableLocation,
                                             onValueChange = { editableLocation = it },
-                                            label = { Text("Ingresa tu ubicación") },
+                                            label = { ScaledText("Ingresa tu ubicación") },
                                             leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
                                             modifier = Modifier.fillMaxWidth()
                                         )
 
-                                        Text(
+                                        ScaledText(
                                             "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -500,7 +502,7 @@ fun EditProfile(
                             } else {
                                 // Diseño para pantallas más pequeñas o en vertical
                                 Column {
-                                    Text(
+                                    ScaledText(
                                         "Ubicaciones predefinidas",
                                         style = MaterialTheme.typography.titleSmall,
                                         modifier = Modifier.padding(bottom = 8.dp)
@@ -529,7 +531,7 @@ fun EditProfile(
                                                     tint = MaterialTheme.colorScheme.primary
                                                 )
                                                 Spacer(modifier = Modifier.width(16.dp))
-                                                Text(locationOption)
+                                                ScaledText(locationOption)
                                             }
                                         }
                                         Spacer(modifier = Modifier.height(8.dp))
@@ -537,7 +539,7 @@ fun EditProfile(
 
                                     Spacer(modifier = Modifier.height(16.dp))
 
-                                    Text(
+                                    ScaledText(
                                         "Ubicación personalizada",
                                         style = MaterialTheme.typography.titleSmall,
                                         modifier = Modifier.padding(bottom = 8.dp)
@@ -551,7 +553,7 @@ fun EditProfile(
                                         modifier = Modifier.fillMaxWidth()
                                     )
 
-                                    Text(
+                                    ScaledText(
                                         "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -569,11 +571,11 @@ fun EditProfile(
                             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                         ) {
                             TextButton(onClick = { showLocationPicker = false }) {
-                                Text("Cancelar")
+                                ScaledText("Cancelar")
                             }
 
                             Button(onClick = { showLocationPicker = false }) {
-                                Text("Aceptar")
+                                ScaledText("Aceptar")
                             }
                         }
                     }
@@ -591,7 +593,7 @@ fun EditProfile(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("Selecciona una opción:")
+                        ScaledText("Selecciona una opción:")
 
                         Spacer(modifier = Modifier.height(16.dp))
 
@@ -604,7 +606,7 @@ fun EditProfile(
                         ) {
                             Icon(Icons.Default.Photo, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Seleccionar de la galería")
+                            ScaledText("Seleccionar de la galería")
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -618,7 +620,7 @@ fun EditProfile(
                         ) {
                             Icon(Icons.Default.PhotoCamera, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Tomar una foto")
+                            ScaledText("Tomar una foto")
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -627,7 +629,7 @@ fun EditProfile(
                             onClick = { showProfilePictureOptions = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Cancelar")
+                            ScaledText("Cancelar")
                         }
                     }
                 },

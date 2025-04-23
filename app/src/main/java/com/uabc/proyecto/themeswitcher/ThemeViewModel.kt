@@ -26,4 +26,9 @@ class ThemeViewModel(application: Application) : AndroidViewModel(application) {
             preference.saveTheme(theme)
         }
     }
+
+    fun setTheme(theme: AppTheme) {
+        _currentTheme.value = theme
+    }
+
 }

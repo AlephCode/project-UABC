@@ -10,6 +10,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.uabc.proyecto.navigation.AppNavigation
 import com.uabc.proyecto.themeswitcher.*
+import androidx.compose.runtime.compositionLocalOf
+
+
+val LocalFontScale = compositionLocalOf { 1.0f }
 
 @Composable
 fun ThemedApp() {
@@ -22,21 +26,29 @@ fun ThemedApp() {
         return
     }
 
-    val colorScheme = when (currentTheme) {
-        is AppTheme.SanValentin -> if (isDark) darkSanValentinScheme else lightSanValentinScheme
-        is AppTheme.Independencia -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme
-        is AppTheme.Halloween -> if (isDark) darkHalloweenScheme else lightHalloweenScheme
-        else -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme // fallback
-    }
+    var fontScale by remember { mutableStateOf(1.0f) }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography()
+    CompositionLocalProvider(
+        *arrayOf(LocalFontScale provides fontScale)
     ) {
-        AppNavigation(
-            navController = rememberNavController(),
-            currentTheme = currentTheme,
-            onThemeSelected = { viewModel.updateTheme(it) }
-        )
+        val colorScheme = when (currentTheme) {
+            is AppTheme.SanValentin -> if (isDark) darkSanValentinScheme else lightSanValentinScheme
+            is AppTheme.Independencia -> if (isDark) darkIndependenciaScheme else lightIndependenciaScheme
+            is AppTheme.Halloween -> if (isDark) darkHalloweenScheme else lightHalloweenScheme
+        }
+
+        MaterialTheme(
+            colorScheme = colorScheme,
+        ) {
+            val navController = rememberNavController()
+            AppNavigation(
+                navController = navController,
+                currentTheme = currentTheme,
+                onThemeSelected = { viewModel.setTheme(it) },
+                fontScale = fontScale,
+                onFontScaleChange = { newScale -> fontScale = newScale }
+            )
+        }
     }
 }
+

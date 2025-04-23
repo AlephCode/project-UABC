@@ -9,12 +9,16 @@ import com.uabc.proyecto.themeswitcher.AppTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
+import com.uabc.proyecto.ScaledText
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     currentTheme: AppTheme,
     onThemeSelected: (AppTheme) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    fontScale: Float,
+    onFontScaleChange: (Float) -> Unit
 ) {
     val themeOptions = listOf(
         AppTheme.SanValentin,
@@ -31,7 +35,7 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Ajustes") },
+                title = { ScaledText("Ajustes") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
@@ -47,7 +51,7 @@ fun SettingsScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("Selecciona un tema:", style = MaterialTheme.typography.titleMedium)
+            ScaledText("Selecciona un tema:", style = MaterialTheme.typography.titleMedium)
 
             themeOptions.forEach { option ->
                 Button(
@@ -60,9 +64,30 @@ fun SettingsScreen(
                     ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(themeLabels[option] ?: "Tema")
+                    ScaledText(themeLabels[option] ?: "Tema")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = "Tamaño de Letra",
+                modifier = Modifier.padding(8.dp),
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize * fontScale
+            )
+
+            Row(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = { if (fontScale > 0.5f) onFontScaleChange(fontScale - 0.1f) }) {
+                    Text("-")
+                }
+                Button(onClick = { if (fontScale < 2.0f) onFontScaleChange(fontScale + 0.1f) }) {
+                    Text("+")
                 }
             }
         }
     }
 }
+

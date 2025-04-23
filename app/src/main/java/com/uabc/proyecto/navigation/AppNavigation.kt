@@ -16,8 +16,11 @@ import com.uabc.proyecto.screens.SettingsScreen
 fun AppNavigation(
     navController: NavHostController,
     currentTheme: AppTheme,
-    onThemeSelected: (AppTheme) -> Unit
-) {
+    onThemeSelected: (AppTheme) -> Unit,
+    fontScale: Float,
+    onFontScaleChange: (Float) -> Unit
+)
+ {
     var name by remember { mutableStateOf("Aleph Lau") }
     var email by remember { mutableStateOf("aleph@correo.com") }
     var location by remember { mutableStateOf("Tijuana, México") }
@@ -45,7 +48,9 @@ fun AppNavigation(
             SettingsScreen(
                 currentTheme = currentTheme,
                 onThemeSelected = onThemeSelected,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                fontScale = fontScale,
+                onFontScaleChange = onFontScaleChange
             )
         }
         composable("edit") {

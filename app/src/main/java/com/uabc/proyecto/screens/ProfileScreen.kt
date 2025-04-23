@@ -19,6 +19,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.uabc.proyecto.themeswitcher.AppTheme
 
+import com.uabc.proyecto.ScaledText
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -35,7 +38,7 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mi Perfil") },
+                title = { ScaledText("Mi Perfil") },
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Ajustes")
@@ -64,8 +67,8 @@ fun ProfileScreen(
                         .background(MaterialTheme.colorScheme.tertiaryContainer)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(name, style = MaterialTheme.typography.titleLarge)
-                Text(email, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                ScaledText(name, style = MaterialTheme.typography.titleLarge)
+                ScaledText(email, style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider(color = MaterialTheme.colorScheme.outline)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -77,13 +80,13 @@ fun ProfileScreen(
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Acerca de mí", style = MaterialTheme.typography.titleMedium)
+                        ScaledText("Acerca de mí", style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(aboutMe, style = MaterialTheme.typography.bodyMedium)
+                        ScaledText(aboutMe, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                Text("Intereses", style = MaterialTheme.typography.titleMedium)
+                ScaledText("Intereses", style = MaterialTheme.typography.titleMedium)
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(top = 8.dp)
@@ -91,18 +94,18 @@ fun ProfileScreen(
                     items(interests) { interest ->
                         AssistChip(
                             onClick = { },
-                            label = { Text(interest) }
+                            label = { ScaledText(interest) }
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(26.dp))
-                Text("Información personal", style = MaterialTheme.typography.titleMedium)
+                ScaledText("Información personal", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = location,
                     onValueChange = {},
-                    label = { Text("Ubicación") },
+                    label = { ScaledText("Ubicación") },
                     enabled = false,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -110,7 +113,7 @@ fun ProfileScreen(
                 OutlinedTextField(
                     value = birthDate,
                     onValueChange = {},
-                    label = { Text("Fecha de nacimiento") },
+                    label = { ScaledText("Fecha de nacimiento") },
                     enabled = false,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -123,7 +126,7 @@ fun ProfileScreen(
                 ) {
                     Icon(Icons.Default.Edit, contentDescription = "Editar")
                     Spacer(Modifier.width(8.dp))
-                    Text("Editar perfil")
+                    ScaledText("Editar perfil")
                 }
             }
             item {
@@ -134,7 +137,7 @@ fun ProfileScreen(
                 ) {
                     Icon(Icons.Filled.ExitToApp, contentDescription = "Cerrar sesión")
                     Spacer(Modifier.width(8.dp))
-                    Text("Cerrar sesión")
+                    ScaledText("Cerrar sesión")
                 }
             }
         }
