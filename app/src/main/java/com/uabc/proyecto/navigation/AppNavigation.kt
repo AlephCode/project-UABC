@@ -1,5 +1,7 @@
 package com.uabc.proyecto.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,7 @@ import com.uabc.proyecto.themeswitcher.AppTheme
 import com.uabc.proyecto.screens.ProfileScreen
 import com.uabc.proyecto.screens.SettingsScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
     navController: NavHostController,
