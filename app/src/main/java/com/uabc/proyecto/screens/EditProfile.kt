@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.res.stringResource
+import com.uabc.proyecto.R
 import com.uabc.proyecto.themeswitcher.AppTheme
 import java.time.Instant
 import java.time.ZoneId
@@ -68,7 +70,7 @@ fun EditProfile(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Perfil") },
+                title = { Text(stringResource(id = R.string.editarPerfil)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.Close, contentDescription = "Cerrar")
@@ -122,7 +124,7 @@ fun EditProfile(
                     TextButton(
                         onClick = { showProfilePictureOptions = true }
                     ) {
-                        Text("Cambiar foto")
+                        Text(stringResource(id = R.string.cambiarFoto))
                     }
                 }
             }
@@ -131,7 +133,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableName,
                     onValueChange = { editableName = it },
-                    label = { Text("Nombre") },
+                    label = { Text(stringResource(id = R.string.nombre)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -140,7 +142,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableEmail,
                     onValueChange = { editableEmail = it },
-                    label = { Text("Correo Electrónico") },
+                    label = { Text(stringResource(id = R.string.correoElectronico)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -149,7 +151,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableLocation,
                     onValueChange = { editableLocation = it },
-                    label = { Text("Ubicación") },
+                    label = { Text(stringResource(id = R.string.ubicacion)) },
                     leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = "Ubicación") },
                     trailingIcon = {
                         IconButton(onClick = { showLocationPicker = true }) {
@@ -168,7 +170,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableBirthDate,
                     onValueChange = { },
-                    label = { Text("Fecha de nacimiento") },
+                    label = { Text(stringResource(id = R.string.fechaNacimiento)) },
                     leadingIcon = { Icon(Icons.Default.DateRange, contentDescription = "Fecha") },
                     trailingIcon = {
                         IconButton(onClick = { showDatePicker = true }) {
@@ -187,7 +189,7 @@ fun EditProfile(
                 OutlinedTextField(
                     value = editableAboutMe,
                     onValueChange = { editableAboutMe = it },
-                    label = { Text("Acerca de mí") },
+                    label = { Text(stringResource(id = R.string.acerca)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp)
@@ -196,7 +198,7 @@ fun EditProfile(
 
             item {
                 Text(
-                    "Intereses",
+                    stringResource(id = R.string.interes),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -215,7 +217,7 @@ fun EditProfile(
                                 set(index, updatedInterest)
                             }
                         },
-                        label = { Text("Interés ${index + 1}") },
+                        label = { Text(stringResource(id = R.string.interes) + "${index + 1}") },
                         modifier = Modifier.weight(1f)
                     )
 
@@ -247,11 +249,11 @@ fun EditProfile(
                     ) {
                         Icon(Icons.Default.Add, contentDescription = "Agregar")
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Agregar interés")
+                        Text(stringResource(id = R.string.addInteres))
                     }
                 } else {
                     Text(
-                        "Has alcanzado el máximo de intereses (6).",
+                        stringResource(id = R.string.maxInteres),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
@@ -264,7 +266,7 @@ fun EditProfile(
             item {
                 if (editableInterests.size <= 3) {
                     Text(
-                        "Debes mantener al menos 3 intereses.",
+                        stringResource(id = R.string.minInteres),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -309,7 +311,7 @@ fun EditProfile(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "Seleccionar fecha",
+                                stringResource(id = R.string.selectFecha),
                                 style = if (isLandscape)
                                     MaterialTheme.typography.titleMedium
                                 else
@@ -318,7 +320,7 @@ fun EditProfile(
 
                             Row {
                                 TextButton(onClick = { showDatePicker = false }) {
-                                    Text("Cancelar")
+                                    Text(stringResource(id = R.string.cancel))
                                 }
                                 TextButton(
                                     onClick = {
@@ -331,7 +333,7 @@ fun EditProfile(
                                         showDatePicker = false
                                     }
                                 ) {
-                                    Text("Aceptar")
+                                    Text(stringResource(id = R.string.accept))
                                 }
                             }
                         }
@@ -399,7 +401,7 @@ fun EditProfile(
                     ) {
                         // Título
                         Text(
-                            "Seleccionar ubicación",
+                            stringResource(id = R.string.selectUbicacion),
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
@@ -410,7 +412,7 @@ fun EditProfile(
                                 .weight(1f)
                                 .verticalScroll(rememberScrollState())
                         ) {
-                            Text("Selecciona una ubicación predefinida o introduce una dirección manualmente")
+                            Text(stringResource(id = R.string.setUbicacion))
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -435,7 +437,7 @@ fun EditProfile(
                                         modifier = Modifier.weight(1f)
                                     ) {
                                         Text(
-                                            "Ubicaciones predefinidas",
+                                            stringResource(id = R.string.ubicacionPredefinida),
                                             style = MaterialTheme.typography.titleSmall,
                                             modifier = Modifier.padding(bottom = 8.dp)
                                         )
@@ -476,7 +478,7 @@ fun EditProfile(
                                         modifier = Modifier.weight(1f)
                                     ) {
                                         Text(
-                                            "Ubicación personalizada",
+                                            stringResource(id = R.string.ubicacionPersonalizada),
                                             style = MaterialTheme.typography.titleSmall,
                                             modifier = Modifier.padding(bottom = 8.dp)
                                         )
@@ -484,13 +486,13 @@ fun EditProfile(
                                         OutlinedTextField(
                                             value = editableLocation,
                                             onValueChange = { editableLocation = it },
-                                            label = { Text("Ingresa tu ubicación") },
+                                            label = { Text(stringResource(id = R.string.insertarUbicacion)) },
                                             leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
                                             modifier = Modifier.fillMaxWidth()
                                         )
 
                                         Text(
-                                            "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
+                                            stringResource(id = R.string.notaUbicacion),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.padding(top = 8.dp)
@@ -501,7 +503,7 @@ fun EditProfile(
                                 // Diseño para pantallas más pequeñas o en vertical
                                 Column {
                                     Text(
-                                        "Ubicaciones predefinidas",
+                                        stringResource(id = R.string.ubicacionPredefinida),
                                         style = MaterialTheme.typography.titleSmall,
                                         modifier = Modifier.padding(bottom = 8.dp)
                                     )
@@ -538,7 +540,7 @@ fun EditProfile(
                                     Spacer(modifier = Modifier.height(16.dp))
 
                                     Text(
-                                        "Ubicación personalizada",
+                                        stringResource(id = R.string.ubicacionPersonalizada),
                                         style = MaterialTheme.typography.titleSmall,
                                         modifier = Modifier.padding(bottom = 8.dp)
                                     )
@@ -546,13 +548,13 @@ fun EditProfile(
                                     OutlinedTextField(
                                         value = editableLocation,
                                         onValueChange = { editableLocation = it },
-                                        label = { Text("Ingresa tu ubicación") },
+                                        label = { Text(stringResource(id = R.string.insertarUbicacion)) },
                                         leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
                                         modifier = Modifier.fillMaxWidth()
                                     )
 
                                     Text(
-                                        "Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places",
+                                        stringResource(id = R.string.notaUbicacion),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 8.dp)
@@ -569,11 +571,11 @@ fun EditProfile(
                             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                         ) {
                             TextButton(onClick = { showLocationPicker = false }) {
-                                Text("Cancelar")
+                                Text(stringResource(id = R.string.cancel))
                             }
 
                             Button(onClick = { showLocationPicker = false }) {
-                                Text("Aceptar")
+                                Text(stringResource(id = R.string.accept))
                             }
                         }
                     }
@@ -585,13 +587,13 @@ fun EditProfile(
         if (showProfilePictureOptions) {
             AlertDialog(
                 onDismissRequest = { showProfilePictureOptions = false },
-                title = { Text("Cambiar foto de perfil") },
+                title = { Text(stringResource(id = R.string.cambiarFotoPerfil)) },
                 text = {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("Selecciona una opción:")
+                        Text(stringResource(id = R.string.selectOpcion))
 
                         Spacer(modifier = Modifier.height(16.dp))
 
@@ -604,7 +606,7 @@ fun EditProfile(
                         ) {
                             Icon(Icons.Default.Photo, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Seleccionar de la galería")
+                            Text(stringResource(id = R.string.selectGaleria))
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -618,7 +620,7 @@ fun EditProfile(
                         ) {
                             Icon(Icons.Default.PhotoCamera, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Tomar una foto")
+                            Text(stringResource(id = R.string.selectFoto))
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -627,7 +629,7 @@ fun EditProfile(
                             onClick = { showProfilePictureOptions = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Cancelar")
+                            Text(stringResource(id = R.string.cancel))
                         }
                     }
                 },

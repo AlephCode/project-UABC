@@ -1,3 +1,44 @@
 <resources>
     <string name="app_name">proyecto</string>
+    <!--ProfileScreen.kt Inicio-->
+    <string name="miPerfil">Mi Perfil</string>
+    <string name="editar">Editar Perfil</string>
+    <string name="cerrar">Cerrar Sesión</string>
+    <string name="informacionPersonal">Información personal</string>
+    <!--ProfileScreen.kt Fin-->
+    <!--EditProfile.kt Inicio-->
+    <string name="editarPerfil">Editar Perfil</string>
+    <string name="cambiarFoto">Cambiar foto</string>
+    <string name="nombre">Nombre</string>
+    <string name="correoElectronico">Correo Electrónico</string>
+    <string name="interes">Interés</string>
+    <string name="addInteres">Agregar Interés</string>
+    <string name="maxInteres">Has alcanzado el máximo de intereses (6).</string>
+    <string name="minInteres">Debes mantener al menos 3 Intereses.</string>
+    <string name="selectFecha">Seleccionar fecha</string>
+    <string name="selectUbicacion">Seleccionar ubicación</string>
+    <string name="setUbicacion">Selecciona una ubicación predefinida o introduce una dirección manualmente</string>
+    <string name="ubicacionPredefinida">Ubicaciones predefinidas</string>
+    <string name="ubicacionPersonalizada">Ubicación personalizada</string>
+    <string name="insertarUbicacion">Ingresa tu ubicación</string>
+    <string name="notaUbicacion">Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places</string>
+    <string name="cambiarFotoPerfil">Cambiar foto de perfil</string>
+    <string name="selectOpcion">Selecciona una opción:</string>
+    <string name="selectGaleria"></string>
+    <string name="selectFoto">Seleccionar de la galería</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
+    <!--EditProfile.kt Fin-->
+    <!--SettingsScreen.kt Inicio-->
+    <string name="ajustes">Ajustes</string>
+    <string name="selectTema">Selecciona un tema:</string>
+    <string name="sanValetin">San Valentín 💖</string>
+    <string name="independenciaMexico">Independencia 🇲🇽</string>
+    <string name="halloween">Halloween 🎃</string>
+    <!--SettingsScreen.kt Fin-->
+    <!--Elementos Compartidos-->
+    <string name="intereses">Intereses</string> <!-- Elemento Compartido -->
+    <string name="ubicacion">Ubicación</string> <!-- Elemento Compartido -->
+    <string name="fechaNacimiento">Fecha de nacimiento</string> <!-- Elemento Compartido -->
+    <string name="acerca">Acerca de mí</string> <!-- Elemento Compartido -->
 </resources>

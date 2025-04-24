@@ -17,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import com.uabc.proyecto.themeswitcher.AppTheme
+import com.uabc.proyecto.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +37,7 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mi Perfil") },
+                title = { Text(stringResource(id = R.string.miPerfil)) },
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Ajustes")
@@ -77,13 +79,13 @@ fun ProfileScreen(
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Acerca de mí", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(id = R.string.acerca), style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(aboutMe, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                Text("Intereses", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(id = R.string.intereses), style = MaterialTheme.typography.titleMedium)
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(top = 8.dp)
@@ -97,12 +99,12 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(26.dp))
-                Text("Información personal", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(id = R.string.informacionPersonal), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = location,
                     onValueChange = {},
-                    label = { Text("Ubicación") },
+                    label = { Text(stringResource(id = R.string.ubicacion)) },
                     enabled = false,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -110,7 +112,7 @@ fun ProfileScreen(
                 OutlinedTextField(
                     value = birthDate,
                     onValueChange = {},
-                    label = { Text("Fecha de nacimiento") },
+                    label = { Text(stringResource(id = R.string.fechaNacimiento)) },
                     enabled = false,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -123,7 +125,7 @@ fun ProfileScreen(
                 ) {
                     Icon(Icons.Default.Edit, contentDescription = "Editar")
                     Spacer(Modifier.width(8.dp))
-                    Text("Editar perfil")
+                    Text(text = stringResource(id = R.string.editar))
                 }
             }
             item {
@@ -134,7 +136,7 @@ fun ProfileScreen(
                 ) {
                     Icon(Icons.Filled.ExitToApp, contentDescription = "Cerrar sesión")
                     Spacer(Modifier.width(8.dp))
-                    Text("Cerrar sesión")
+                    Text(text = stringResource(id = R.string.cerrar))
                 }
             }
         }
