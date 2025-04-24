@@ -24,8 +24,8 @@
     <string name="notaUbicacion">Nota: Para una implementación completa, se requeriría integrar la API de Google Maps o Places</string>
     <string name="cambiarFotoPerfil">Cambiar foto de perfil</string>
     <string name="selectOpcion">Selecciona una opción:</string>
-    <string name="selectGaleria"></string>
-    <string name="selectFoto">Seleccionar de la galería</string>
+    <string name="selectGaleria">Seleccionar de la galería</string>
+    <string name="selectFoto">Tomar una foto</string>
     <string name="cancel">Cancelar</string>
     <string name="accept">Aceptar</string>
     <!--EditProfile.kt Fin-->
