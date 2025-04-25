@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.ui.res.stringResource
 import com.uabc.proyecto.R
 import com.uabc.proyecto.themeswitcher.AppTheme
@@ -14,10 +15,15 @@ import com.uabc.proyecto.themeswitcher.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    windowSizeClass: WindowSizeClass,
     currentTheme: AppTheme,
     onThemeSelected: (AppTheme) -> Unit,
     onBack: () -> Unit
 ) {
+    var windowSizeClass = windowSizeClass
+    print(windowSizeClass.widthSizeClass.toString())
+    print(windowSizeClass.heightSizeClass.toString())
+
     val themeOptions = listOf(
         AppTheme.SanValentin,
         AppTheme.Independencia,

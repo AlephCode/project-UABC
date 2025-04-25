@@ -1,9 +1,12 @@
 package com.uabc.proyecto
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -11,8 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.uabc.proyecto.navigation.AppNavigation
 import com.uabc.proyecto.themeswitcher.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ThemedApp() {
+fun ThemedApp(windowSizeClass: WindowSizeClass) {
     val isDark = isSystemInDarkTheme()
     val viewModel: ThemeViewModel = viewModel()
     val currentTheme = viewModel.currentTheme.collectAsState().value
@@ -34,6 +38,7 @@ fun ThemedApp() {
         typography = Typography()
     ) {
         AppNavigation(
+            windowSizeClass = windowSizeClass,
             navController = rememberNavController(),
             currentTheme = currentTheme,
             onThemeSelected = { viewModel.updateTheme(it) }

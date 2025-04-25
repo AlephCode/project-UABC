@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfile(
+    windowSizeClass: WindowSizeClass,
     currentTheme: AppTheme,
     name: String,
     email: String,
@@ -43,6 +46,11 @@ fun EditProfile(
     onNavigateBack: () -> Unit,
     onSaveProfile: (String, String, String, String, String, List<String>) -> Unit
 ) {
+    var windowSizeClass = windowSizeClass
+    print(windowSizeClass.widthSizeClass.toString())
+    print(windowSizeClass.heightSizeClass.toString())
+
+
     var editableName by remember { mutableStateOf(name) }
     var editableEmail by remember { mutableStateOf(email) }
     var editableLocation by remember { mutableStateOf(location) }
