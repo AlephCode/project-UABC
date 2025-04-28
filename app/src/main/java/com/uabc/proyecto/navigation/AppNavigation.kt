@@ -2,6 +2,8 @@ package com.uabc.proyecto.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,6 +16,7 @@ import com.uabc.proyecto.screens.SettingsScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
+    windowSizeClass: WindowSizeClass,
     navController: NavHostController,
     currentTheme: AppTheme,
     onThemeSelected: (AppTheme) -> Unit
@@ -28,6 +31,7 @@ fun AppNavigation(
     NavHost(navController, startDestination = "profile") {
         composable("profile") {
             ProfileScreen(
+                windowSizeClass = windowSizeClass,
                 currentTheme = currentTheme,
                 name = name,
                 email = email,
@@ -43,6 +47,7 @@ fun AppNavigation(
         }
         composable("settings") {
             SettingsScreen(
+                windowSizeClass = windowSizeClass,
                 currentTheme = currentTheme,
                 onThemeSelected = onThemeSelected,
                 onBack = { navController.popBackStack() }
@@ -50,6 +55,7 @@ fun AppNavigation(
         }
         composable("edit") {
             EditProfile(
+                windowSizeClass = windowSizeClass,
                 currentTheme = currentTheme,
                 name = name,
                 email = email,
