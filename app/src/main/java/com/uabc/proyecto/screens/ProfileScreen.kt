@@ -219,13 +219,18 @@ fun AboutMeSection(spacer: Int, aboutMe: String) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(id = R.string.acerca), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(id = R.string.acerca),
+                style = MaterialTheme.typography.titleMedium
+            )
             Spacer(modifier = Modifier.height(spacer.dp))
-            Text(aboutMe, style = MaterialTheme.typography.bodyMedium)
+            Text(aboutMe,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
     Spacer(modifier = Modifier.height((spacer+16).dp))
@@ -257,7 +262,12 @@ fun PersonalInfoSection(spacer: Int, location: String, birthDate: String) {
         onValueChange = {},
         label = { Text(stringResource(id = R.string.ubicacion)) },
         enabled = false,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = OutlinedTextFieldDefaults.colors(
+            disabledBorderColor = MaterialTheme.colorScheme.onSurface, // Color cuando está deshabilitado
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,    // Color del texto cuando está deshabilitado
+            disabledLabelColor = MaterialTheme.colorScheme.onSurface    // Color del label cuando está deshabilitado
+        )
     )
     Spacer(modifier = Modifier.height((spacer-4).dp))
     OutlinedTextField(
@@ -265,7 +275,13 @@ fun PersonalInfoSection(spacer: Int, location: String, birthDate: String) {
         onValueChange = {},
         label = { Text(stringResource(id = R.string.fechaNacimiento)) },
         enabled = false,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = OutlinedTextFieldDefaults.colors(
+            disabledBorderColor = MaterialTheme.colorScheme.onSurface, // Color cuando está deshabilitado
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,    // Color del texto cuando está deshabilitado
+            disabledLabelColor = MaterialTheme.colorScheme.onSurface    // Color del label cuando está deshabilitado
+        )
+
     )
 }
 

@@ -242,7 +242,7 @@ fun EditProfile(
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Eliminar interés",
-                            tint = if (editableInterests.size > 3) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            tint = if (editableInterests.size > 3) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.error.copy(alpha = 0.35f)
                         )
                     }
                 }
@@ -276,7 +276,7 @@ fun EditProfile(
                     Text(
                         stringResource(id = R.string.minInteres),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
