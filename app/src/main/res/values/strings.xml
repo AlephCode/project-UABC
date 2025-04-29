@@ -35,6 +35,7 @@
     <string name="sanValetin">San Valentín 💖</string>
     <string name="independenciaMexico">Independencia 🇲🇽</string>
     <string name="halloween">Halloween 🎃</string>
+    <string name="tema">Tema</string>
     <!--SettingsScreen.kt Fin-->
     <!--Elementos Compartidos-->
     <string name="intereses">Intereses</string> <!-- Elemento Compartido -->
