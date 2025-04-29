@@ -68,7 +68,7 @@ fun SettingsScreen(
                     ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(themeLabels[option] ?: "Tema")
+                    Text(themeLabels[option] ?: stringResource(id = R.string.tema))
                 }
             }
         }
