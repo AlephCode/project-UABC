@@ -19,12 +19,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import com.uabc.proyecto.R
 import com.uabc.proyecto.themeswitcher.AppTheme
 import java.time.Instant
@@ -284,53 +286,144 @@ fun EditProfile(
             }
         }
 
-// DatePicker para la selección de fecha de nacimiento - Adaptable a la orientación
+// DatePicker para la selección de fecha de nacimiento - Con enfoque separado para horizontal y vertical
         if (showDatePicker) {
             Dialog(
                 onDismissRequest = { showDatePicker = false },
                 properties = DialogProperties(
                     dismissOnBackPress = true,
                     dismissOnClickOutside = true,
-                    usePlatformDefaultWidth = false // Permite que el diálogo se ajuste al contenido
+                    usePlatformDefaultWidth = false
                 )
             ) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth(if (isLandscape) 0.85f else 0.95f)
-                        // Reducir la altura máxima en modo horizontal para ver todos los días
-                        .fillMaxHeight(if (isLandscape) 0.80f else 0.7f),
-                    shape = MaterialTheme.shapes.extraLarge,
-                    tonalElevation = 6.dp
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize()
+                if (isLandscape) {
+                    // VERSIÓN HORIZONTAL - Completamente separada con configuración específica
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)  // Más estrecho en horizontal
+                            .heightIn(max = 420.dp), // Limitar altura máxima
+                        shape = MaterialTheme.shapes.extraLarge,
+                        tonalElevation = 6.dp
                     ) {
-                        // Título y botones - hacer más compacto
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 24.dp,
-                                    end = 24.dp,
-                                    top = if (isLandscape) 12.dp else 20.dp,
-                                    bottom = if (isLandscape) 8.dp else 12.dp
-                                ),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        Column(
+                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                        ) {
+                            // Título más pequeño
+                            Text(
+                                stringResource(id = R.string.selectFecha),
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+                            )
+
+                            // DatePicker con configuración básica pero en un contenedor con tamaño limitado
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(horizontal = 4.dp)
+                                    // Usar scale para hacer el calendario más pequeño
+                                    .scale(0.9f)
+                            ) {
+                                DatePicker(
+                                    state = datePickerState,
+                                    showModeToggle = false,
+                                    title = null,
+                                    headline = null,
+                                    colors = DatePickerDefaults.colors(
+                                        containerColor = MaterialTheme.colorScheme.surface,
+                                        selectedDayContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
+                                        todayContentColor = MaterialTheme.colorScheme.primary,
+                                        todayDateBorderColor = MaterialTheme.colorScheme.primary
+                                    )
+                                )
+                            }
+
+                            // Botones al final con tamaño reducido
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextButton(
+                                    onClick = { showDatePicker = false },
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                ) {
+                                    Text(
+                                        stringResource(id = R.string.cancel),
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+
+                                Button(
+                                    onClick = {
+                                        datePickerState.selectedDateMillis?.let { milliseconds ->
+                                            val date = Instant.ofEpochMilli(milliseconds)
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate()
+                                            editableBirthDate = date.format(dateFormatter)
+                                        }
+                                        showDatePicker = false
+                                    },
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp) // Botón más compacto
+                                ) {
+                                    Text(
+                                        stringResource(id = R.string.accept),
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // VERSIÓN VERTICAL - La que ya funcionaba correctamente
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f)
+                            .wrapContentHeight(),
+                        shape = MaterialTheme.shapes.extraLarge,
+                        tonalElevation = 6.dp
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(vertical = 16.dp)
                         ) {
                             Text(
                                 stringResource(id = R.string.selectFecha),
-                                style = if (isLandscape)
-                                    MaterialTheme.typography.titleMedium
-                                else
-                                    MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(start = 24.dp, bottom = 8.dp)
                             )
 
-                            Row {
-                                TextButton(onClick = { showDatePicker = false }) {
+                            DatePicker(
+                                state = datePickerState,
+                                showModeToggle = false,
+                                title = null,
+                                headline = null,
+                                colors = DatePickerDefaults.colors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    selectedDayContainerColor = MaterialTheme.colorScheme.primary,
+                                    selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
+                                    todayContentColor = MaterialTheme.colorScheme.primary,
+                                    todayDateBorderColor = MaterialTheme.colorScheme.primary
+                                )
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextButton(
+                                    onClick = { showDatePicker = false },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(stringResource(id = R.string.cancel))
                                 }
-                                TextButton(
+
+                                Button(
                                     onClick = {
                                         datePickerState.selectedDateMillis?.let { milliseconds ->
                                             val date = Instant.ofEpochMilli(milliseconds)
@@ -345,46 +438,10 @@ fun EditProfile(
                                 }
                             }
                         }
-
-                        // Contenido del DatePicker adaptado a la orientación - más compacto en horizontal
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(
-                                    horizontal = 12.dp,
-                                    vertical = if (isLandscape) 4.dp else 8.dp
-                                )
-                        ) {
-                            DatePicker(
-                                state = datePickerState,
-                                modifier = Modifier.fillMaxSize(),
-                                // Solo mostrar el modo compacto en horizontal para ahorrar espacio
-                                showModeToggle = !isLandscape,
-                                title = null, // Ya tenemos un título personalizado arriba
-                                headline = null, // Para ahorrar espacio
-                                colors = DatePickerDefaults.colors(
-                                    containerColor = MaterialTheme.colorScheme.surface,
-                                    titleContentColor = MaterialTheme.colorScheme.primary,
-                                    headlineContentColor = MaterialTheme.colorScheme.onSurface,
-                                    weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    yearContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    currentYearContentColor = MaterialTheme.colorScheme.primary,
-                                    selectedYearContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedYearContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    dayContentColor = MaterialTheme.colorScheme.onSurface,
-                                    selectedDayContainerColor = MaterialTheme.colorScheme.primary,
-                                    selectedDayContentColor = MaterialTheme.colorScheme.onPrimary,
-                                    todayContentColor = MaterialTheme.colorScheme.primary,
-                                    todayDateBorderColor = MaterialTheme.colorScheme.primary
-                                )
-                            )
-                        }
                     }
                 }
             }
         }
-
         // Diálogo de selección de ubicación - Adaptable a la orientación
         if (showLocationPicker) {
             Dialog(
