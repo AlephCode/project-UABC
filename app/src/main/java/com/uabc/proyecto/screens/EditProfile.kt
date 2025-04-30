@@ -297,31 +297,34 @@ fun EditProfile(
                 )
             ) {
                 if (isLandscape) {
-                    // VERSIÓN HORIZONTAL - Completamente separada con configuración específica
+                    // ----- Versión Horizontal -----
                     Surface(
                         modifier = Modifier
-                            .fillMaxWidth(0.8f)  // Más estrecho en horizontal
-                            .heightIn(max = 420.dp), // Limitar altura máxima
+                            .fillMaxWidth(0.7f) // Diálogo más compacto
+                            .heightIn(min = 350.dp) // Ajuste de altura mínima
+                            .padding(8.dp),
                         shape = MaterialTheme.shapes.extraLarge,
                         tonalElevation = 6.dp
                     ) {
                         Column(
-                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(horizontal = 12.dp, vertical = 6.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
-                            // Título más pequeño
                             Text(
                                 stringResource(id = R.string.selectFecha),
                                 style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+                                modifier = Modifier.padding(bottom = 2.dp)
                             )
 
-                            // DatePicker con configuración básica pero en un contenedor con tamaño limitado
                             Box(
                                 modifier = Modifier
-                                    .weight(1f)
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
                                     .padding(horizontal = 4.dp)
-                                    // Usar scale para hacer el calendario más pequeño
-                                    .scale(0.9f)
                             ) {
                                 DatePicker(
                                     state = datePickerState,
@@ -338,23 +341,18 @@ fun EditProfile(
                                 )
                             }
 
-                            // Botones al final con tamaño reducido
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                                    .padding(horizontal = 8.dp, vertical = 4.dp),
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 TextButton(
                                     onClick = { showDatePicker = false },
-                                    modifier = Modifier.padding(end = 8.dp),
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                    modifier = Modifier.padding(end = 6.dp)
                                 ) {
-                                    Text(
-                                        stringResource(id = R.string.cancel),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
+                                    Text(stringResource(id = R.string.cancel))
                                 }
 
                                 Button(
@@ -366,19 +364,15 @@ fun EditProfile(
                                             editableBirthDate = date.format(dateFormatter)
                                         }
                                         showDatePicker = false
-                                    },
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp) // Botón más compacto
+                                    }
                                 ) {
-                                    Text(
-                                        stringResource(id = R.string.accept),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
+                                    Text(stringResource(id = R.string.accept))
                                 }
                             }
                         }
                     }
                 } else {
-                    // VERSIÓN VERTICAL - La que ya funcionaba correctamente
+                    // ----- Versión Vertical -----
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth(0.95f)
@@ -387,12 +381,13 @@ fun EditProfile(
                         tonalElevation = 6.dp
                     ) {
                         Column(
-                            modifier = Modifier.padding(vertical = 16.dp)
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Text(
                                 stringResource(id = R.string.selectFecha),
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(start = 24.dp, bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = 4.dp)
                             )
 
                             DatePicker(
@@ -412,13 +407,13 @@ fun EditProfile(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    .padding(horizontal = 12.dp, vertical = 6.dp),
                                 horizontalArrangement = Arrangement.End,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 TextButton(
                                     onClick = { showDatePicker = false },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 6.dp)
                                 ) {
                                     Text(stringResource(id = R.string.cancel))
                                 }
@@ -442,6 +437,7 @@ fun EditProfile(
                 }
             }
         }
+
         // Diálogo de selección de ubicación - Adaptable a la orientación
         if (showLocationPicker) {
             Dialog(
