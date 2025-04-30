@@ -10,7 +10,8 @@ private val Context.dataStore by preferencesDataStore(name = "theme_settings")
 
 class ThemePreference(private val context: Context) {
     companion object {
-        val THEME_KEY = stringPreferencesKey("selected_theme")
+        val THEME_KEY: Preferences.Key<String>
+            get() = stringPreferencesKey("select theme")
     }
 
     fun getTheme(): Flow<AppTheme> {
