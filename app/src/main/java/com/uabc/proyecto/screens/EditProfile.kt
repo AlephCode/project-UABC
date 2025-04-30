@@ -361,6 +361,7 @@ fun EditProfile(
                                             val date = Instant.ofEpochMilli(milliseconds)
                                                 .atZone(ZoneId.systemDefault())
                                                 .toLocalDate()
+                                                .plusDays(1)
                                             editableBirthDate = date.format(dateFormatter)
                                         }
                                         showDatePicker = false
@@ -424,6 +425,7 @@ fun EditProfile(
                                             val date = Instant.ofEpochMilli(milliseconds)
                                                 .atZone(ZoneId.systemDefault())
                                                 .toLocalDate()
+                                                .plusDays(1)
                                             editableBirthDate = date.format(dateFormatter)
                                         }
                                         showDatePicker = false
